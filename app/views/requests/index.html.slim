@@ -1,0 +1,42 @@
+- if @error
+  h1.red
+    = @error
+
+.row.form.card
+  = render partial: 'requests/form'
+
+.row.players.card
+  h3
+    | Players
+  - if @first_player || @second_player
+    table
+      tr
+        td | First Player
+        td | Second Player
+      tr
+        td
+          = @first_player.try(:inspect) || 'No player found'
+        td
+          = @second_player.try(:inspect) || 'No player found'
+
+.row.matches.card
+  h3
+    | Matches
+  - if @matches_played_ids.present? && @matches_played.present?
+    table
+      tr
+        td | First Player Side
+        td | Second Player Side
+      - @matches_played.each do |match|
+        tr
+          th
+            = "Match started: #{match[:match_creation]}"
+          th
+            = "Match mode: #{match[:mode]}"
+        tr
+          td
+            = @first_player.summoner_id.in? match[:winners]
+          td
+            = @second_player.summoner_id.in? match[:winners]
+  - else
+    | No common matches played

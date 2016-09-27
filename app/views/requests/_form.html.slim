@@ -1,0 +1,33 @@
+= form_for :query, url: { action: :query_results }, method: :get do |f|
+  .row.well
+    .col-sm-3
+    .col-sm-6
+      fieldset.form-group
+        = f.label :region
+        br
+        = f.select :region, region_variants.collect { |a| [a.upcase ,a] }, selected: @query.region
+    .col-sm-3
+  .row.well
+    .col-sm-6
+      fieldset.form-inline
+        legend
+          = f.label :first_player
+        = f.fields_for :first_player do |fpf|
+          .form-group
+            = fpf.label :summoner_name
+            br
+            = fpf.text_field :summoner_name, value: @query.first_player.try(:summoner_name)
+
+    .col-sm-6
+      fieldset.form-inline
+
+        legend
+          = f.label :second_player
+
+        = f.fields_for :second_player do |spf|
+          .form-group
+            = spf.label :summoner_name
+            br
+            = spf.text_field :summoner_name, value: @query.second_player.try(:summoner_name)
+  .row.well
+    = f.submit :query, class: 'btn btn-primary'
