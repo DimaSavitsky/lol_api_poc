@@ -2,6 +2,10 @@
   h1.red
     = @error
 
+- if @api
+  h3.red
+    = "Made #{@api.requests} requests"
+
 .row.form.card
   = render partial: 'requests/form'
 
@@ -25,8 +29,8 @@
   - if @matches_played_ids.present? && @matches_played.present?
     table
       tr
-        td | First Player Side
-        td | Second Player Side
+        td  First Player Side
+        td  Second Player Side
       - @matches_played.each do |match|
         tr
           th
@@ -35,8 +39,8 @@
             = "Match mode: #{match[:mode]}"
         tr
           td
-            = @first_player.summoner_id.in? match[:winners]
+            = (@first_player.summoner_id.in? match[:winners]) ? "Winner" : "Loser"
           td
-            = @second_player.summoner_id.in? match[:winners]
+            = (@second_player.summoner_id.in? match[:winners]) ? "Winner" : "Loser"
   - else
     | No common matches played

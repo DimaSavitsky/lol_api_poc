@@ -13,17 +13,20 @@ class LolApi
     make_request("v2.2/match/#{match_id}")
   end
 
+  attr_reader :requests
 
   private
 
   def initialize(region:)
     @region = region
     @base_url = "https://#{@region}.api.pvp.net/api/lol/#{@region}/"
+    @requests = 0
   end
 
   def make_request(request)
     request_url  = @base_url + request + "?api_key=#{LOL_API_KEY}"
     Rails.logger.warn "Making a request to \033[32m#{request_url}\033[0m"
+    @requests += 1
     JSON.parse URI.parse(request_url).read
   end
 

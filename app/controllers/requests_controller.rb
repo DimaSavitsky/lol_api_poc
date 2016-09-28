@@ -50,9 +50,12 @@ class RequestsController < ApplicationController
   end
 
   def match_data(match_id)
-    data = api.get_match_data(match_id: match_id)['MatchDetail']
-    { match_creation: DateTime.strptime(data['matchCreation'],'%s'), mode: data['matchMode'] }.tap do |outcome|
-      winner_team = outcome['teams'].find {|team| team['winner'] }
+    data = api.get_match_data(match_id: match_id)
+
+    date = DateTime.strptime(data['matchCreation'].to_s,'%Q')
+
+    { match_creation: date, mode: data['matchMode'] }.tap do |outcome|
+      winner_team = data['teams'].find {|team| team['winner'] }
       winner_team_id = winner_team['teamId']
 
       winner_participant_ids = data['participants'].map do |participant|
@@ -62,10 +65,9 @@ class RequestsController < ApplicationController
 
       outcome[:winners] = data['participantIdentities'].map do |identity|
         if identity['participantId'].in? winner_participant_ids
-          identity['player']['summonerId']
+          identity['player']['summonerId'].to_s
         end
       end.compact
-
     end
   end
 
