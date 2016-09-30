@@ -1,0 +1,31 @@
+- if @error
+  h1.red
+    = @error
+
+- if @api
+  h3.red
+    = "Made #{@api.requests} requests"
+
+.row.form.card
+  = render partial: 'smite_requests/form'
+
+.row.matches.card
+  h3
+    | Matches
+  - if @matches_played_ids.present? && @matches_played.present?
+    table
+      tr
+        td  First Player Side
+        td  Second Player Side
+      - @matches_played.each do |match|
+        tr
+          th
+            = "Match started: #{match[:match_creation]}"
+          th
+        tr
+          td
+            = (@first_player.in? match[:winners]) ? "Winner" : "Loser"
+          td
+            = (@second_player.in? match[:winners]) ? "Winner" : "Loser"
+  - else
+    | No common matches played

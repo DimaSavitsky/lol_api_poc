@@ -7,6 +7,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :smite_requests, only: [:index] do
+    collection do
+      get :query_results
+    end
+  end
+
   root to: 'requests#index'
 
 end
