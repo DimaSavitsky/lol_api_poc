@@ -10,7 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160927141434) do
+ActiveRecord::Schema.define(version: 20161005094421) do
+
+  create_table "smite_sessions", force: :cascade do |t|
+    t.string   "session_id"
+    t.datetime "created_at"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "summoner_name"

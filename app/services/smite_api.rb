@@ -44,15 +44,18 @@ class SmiteApi
 
   def create_session
     @session_id = nil
+    session = Smite::Session.actual.first
 
-    until @session_id
-      response = make_request "createsession"
-
-      if response['session_id'].present?
-        @session_id = response['session_id']
-        @session_created = Time.now
+    unless session
+      until session
+        response = make_request 'createsession'
+        if response['session_id'].present?
+          session = Smite::Session.create session_id: response['session_id'], created_at: Time.now
+        end
       end
     end
+
+    @session_id = session.session_id
   end
 
   def sign(method, stamp)
@@ -60,7 +63,7 @@ class SmiteApi
   end
 
   def timestamp
-    (Time.now).utc.strftime("%Y%m%d%H%M%S")
+    (Time.now).utc.strftime('%Y%m%d%H%M%S')
   end
 
 end
