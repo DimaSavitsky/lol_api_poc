@@ -1,0 +1,11 @@
+applications:
+- path: .
+  command:  bundle exec rails db:migrate && bundle exec rails s -p $PORT
+  memory: 256M
+  instances: 1
+  domain: eu-gb.mybluemix.net
+  name: lol-api-poc
+  host: lol-api-poc
+  disk_quota: 1024M
+  services:
+   - poc-db
