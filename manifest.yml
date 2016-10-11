@@ -1,5 +1,6 @@
 applications:
 - path: .
+  buildpack: v1.6.26
   command:  bundle exec rails db:migrate && bundle exec rails s -p $PORT
   memory: 256M
   instances: 1
